@@ -20,7 +20,6 @@ public class UrlController {
     private UrlRepository urlRepository;
 
     public UrlController(UrlRepository urlRepository) {
-        super();
         this.urlRepository = urlRepository;
     }
 
