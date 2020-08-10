@@ -1,20 +1,50 @@
 package com.example.celendlol.urlshortener.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
-@NoArgsConstructor
-@Data
 @Table(name="url")
 public class Url {
 
     @Id
     private Long id;
-    private String name;
+    @NotBlank(message = "Description is mandatory")
+    private String description;
+    @Column( length = 10)
+    private String username;
 
-    @ManyToOne(cascade= CascadeType.PERSIST)
-    private User user;
+//    @ManyToOne(cascade= CascadeType.PERSIST)
+//    @JoinColumn(name = "post_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private User user;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
+

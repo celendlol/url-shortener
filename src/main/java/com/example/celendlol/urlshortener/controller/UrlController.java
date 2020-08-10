@@ -1,14 +1,15 @@
 package com.example.celendlol.urlshortener.controller;
 
+import javax.validation.Valid;
+
 import com.example.celendlol.urlshortener.model.Url;
 import com.example.celendlol.urlshortener.repositry.UrlRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -19,7 +20,6 @@ public class UrlController {
     private UrlRepository urlRepository;
 
     public UrlController(UrlRepository urlRepository) {
-        super();
         this.urlRepository = urlRepository;
     }
 
@@ -33,5 +33,23 @@ public class UrlController {
         Optional<Url> url = urlRepository.findById(id);
         return url.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/url")
+    ResponseEntity<Url> createUrl(@Valid @RequestBody Url url) throws URISyntaxException {
+        Url result = urlRepository.save(url);
+        return ResponseEntity.created(new URI("/api/url" + result.getId())).body(result);
+    }
+
+    @PutMapping("/category/{id}")
+    ResponseEntity<Url> updateCategory(@Valid @RequestBody Url url){
+        Url result= urlRepository.save(url);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/url/{id}")
+    ResponseEntity<?> deleteUrl(@PathVariable Long id){
+        urlRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
