@@ -12,22 +12,16 @@ public class Url {
 
     @Id
     private Long id;
+    @NotBlank(message = "Description is mandatory")
+    private String description;
+    @Column( length = 10)
+    private String username;
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+//    @ManyToOne(cascade= CascadeType.PERSIST)
+//    @JoinColumn(name = "post_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private User user;
 
-    @ManyToOne(cascade= CascadeType.PERSIST)
-    @JoinColumn(name = "post_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
-    public Url() {}
-
-    public Url(Long id, @NotBlank String name, User user) {
-        this.id = id;
-        this.name = name;
-        this.user = user;
-    }
 
     public Long getId() {
         return id;
@@ -37,21 +31,20 @@ public class Url {
         this.id = id;
     }
 
-    @NotBlank
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(@NotBlank String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
 

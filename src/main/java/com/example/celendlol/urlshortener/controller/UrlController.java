@@ -40,4 +40,16 @@ public class UrlController {
         Url result = urlRepository.save(url);
         return ResponseEntity.created(new URI("/api/url" + result.getId())).body(result);
     }
+
+    @PutMapping("/category/{id}")
+    ResponseEntity<Url> updateCategory(@Valid @RequestBody Url url){
+        Url result= urlRepository.save(url);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/url/{id}")
+    ResponseEntity<?> deleteUrl(@PathVariable Long id){
+        urlRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }
