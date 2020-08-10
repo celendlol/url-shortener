@@ -1,5 +1,9 @@
 package com.example.celendlol.urlshortener.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,18 +12,27 @@ import java.util.List;
 @Table(name="user")
 public class User {
 
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     @Id
     @Column(length=10)
     private String username;
     @Column(length=50)
     private String email;
-    @Column(length=10)
+    @Column(length=10) @JsonIgnore
     private String password;
     @Transient
     private String confirmPassword;
 
     @OneToMany(mappedBy = "username")
     private List<Url> urls = new ArrayList<Url>();
+
+    public User(String username, String email, String password, String confirmPassword) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
 
     public String getUsername() {
         return username;
@@ -42,7 +55,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PASSWORD_ENCODER.encode(password);
     }
 
     public String getConfirmPassword() {
