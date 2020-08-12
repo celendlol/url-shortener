@@ -14,24 +14,31 @@ public class User {
 
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-    @Id
+    private @Id @GeneratedValue Long id;
     @Column(length=10)
     private String username;
-    @Column(length=50)
-    private String email;
     @Column(length=10) @JsonIgnore
     private String password;
-    @Transient
-    private String confirmPassword;
+    @Column(length=50)
+    private String email;
 
     @OneToMany(mappedBy = "username")
     private List<Url> urls = new ArrayList<Url>();
 
-    public User(String username, String email, String password, String confirmPassword) {
+    protected User() {}
+
+    public User(String username, String password, String email) {
         this.username = username;
-        this.email = email;
         this.password = password;
-        this.confirmPassword = confirmPassword;
+        this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -56,14 +63,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = PASSWORD_ENCODER.encode(password);
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public List<Url> getUrls() {
